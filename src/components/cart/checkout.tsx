@@ -6,7 +6,8 @@ export default function CheckoutButton() {
 
     const redirectToCheckout = async () => {
         try {
-            const stripe = await loadStripe(process.env.NEXT_PUBLIC_TEST_STRIPE_PUBLISHABLE_KEY as string);
+            const stripe = await loadStripe(`${process.env.NEXT_PUBLIC_TEST_STRIPE_PUBLISHABLE_KEY}` as string);
+            console.log(stripe)
 
             if (!stripe) throw new Error('Stripe failed to initialize.');
 
@@ -17,6 +18,7 @@ export default function CheckoutButton() {
                 },
                 body: JSON.stringify({cartDetails}),
             });
+            console.log(checkoutResponse)
 
             const {sessionId} = await checkoutResponse.json();
             const stripeError = await stripe.redirectToCheckout({sessionId});
